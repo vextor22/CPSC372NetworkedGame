@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>WeaponTracker.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactserver</a> &gt; <span class="el_source">WeaponTracker.java</span></div><h1>WeaponTracker.java</h1><pre class="source lang-java linenums">package cpsc3720.contactserver;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+
+public class WeaponTracker {
+
+
+	private int masterId;
+	private Map&lt;Integer, Weapon&gt; weaponsMap;
+	private ShipTracker shipTracker;
+	
+<span class="fc" id="L16">	public WeaponTracker(ShipTracker shipTracker){</span>
+<span class="fc" id="L17">		masterId= 0;</span>
+<span class="fc" id="L18">		weaponsMap = new HashMap&lt;Integer, Weapon&gt;();</span>
+<span class="fc" id="L19">		this.shipTracker = shipTracker;</span>
+<span class="fc" id="L20">	}</span>
+	
+    public int addWeapon(Weapon weapon) {	
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">    	if(validate(weapon)){</span>
+<span class="fc" id="L24">    		weapon.setIdNum(masterId);</span>
+<span class="fc" id="L25">    		masterId+=1;</span>
+<span class="fc" id="L26">    		weaponsMap.put(weapon.getIdNum(), weapon);</span>
+<span class="fc" id="L27">    		return weapon.getIdNum();</span>
+    	}
+    	else{
+<span class="nc" id="L30">    		return -1;</span>
+    	}
+    }
+    
+	public Collection&lt;Weapon&gt; getWeaponsList() {
+<span class="fc" id="L35">		return weaponsMap.values();</span>
+	}
+
+	public Weapon updateWeapon(Weapon weapon){
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">		if(validate(weapon)){</span>
+<span class="fc" id="L40">			weaponsMap.get(weapon.update(weapon));</span>
+<span class="fc" id="L41">			return weapon;</span>
+		}
+		else{
+<span class="nc" id="L44">			Weapon errorWeapon = new Weapon(null, false, 0, null);</span>
+<span class="nc" id="L45">			errorWeapon.setIdNum(-1);</span>
+<span class="nc" id="L46">			return errorWeapon;</span>
+		}
+	}
+
+	
+	//eventually this will return a list of all of the weapons to be presented and edited
+	public Map&lt;Integer, Weapon&gt; makeWeaponsList(){
+<span class="fc" id="L53">		return weaponsMap;	</span>
+	}
+		
+	//searches list of ships to check if any ship has that weapon
+	public Weapon deleteWeapon(Weapon weapon) {
+		
+<span class="fc" id="L59">		Collection&lt;Ship&gt; ships = shipTracker.makeShipList().values();</span>
+	
+<span class="fc" id="L61">		Iterator&lt;Ship&gt; shipIterator = ships.iterator();</span>
+<span class="fc" id="L62">		Ship toSearch = new Ship();</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">		for(;shipIterator.hasNext(); toSearch = shipIterator.next()){	</span>
+			if(/*toSearch.getEnergyWeaponId() == weapon.getIdNum() || toSearch.getMissileWeaponId() == weapon.getIdNum()*/ false){
+				
+				Weapon errorWeapon = new Weapon(null, false, 0, null);
+				errorWeapon.setIdNum(-1);
+				return errorWeapon; 
+			}
+		}
+<span class="fc" id="L71">		weaponsMap.remove(weapon.getIdNum());</span>
+<span class="fc" id="L72">		return weapon;</span>
+	}
+	
+	// Validate the date
+	private boolean validate(Weapon weapon){
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">		for(int i = 0; i &lt; weaponsMap.size(); i++){</span>
+
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">			if(weapon.getTitle().equals(weaponsMap.get(i).getTitle())){</span>
+<span class="nc" id="L81">				return false;</span>
+			}	
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">		if(weapon.getYield()&lt;0){</span>
+<span class="nc" id="L84">				return false;</span>
+			}
+		}
+<span class="fc" id="L87">		return true;</span>
+	}
+	
+	public boolean reset(){	
+<span class="fc" id="L91">		weaponsMap.clear();</span>
+<span class="fc" id="L92">		masterId = 0;</span>
+<span class="fc" id="L93">		addWeapon(new Weapon(&quot;EnergyWeapon1&quot;,true, 5,  &quot;weapon Id 1&quot;));</span>
+<span class="fc" id="L94">		addWeapon(new Weapon(&quot;EnergyWeapon2&quot;,true, 6,  &quot;weapon Id 2&quot;));</span>
+<span class="fc" id="L95">		addWeapon(new Weapon(&quot;EnergyWeapon3&quot;,false, 7, &quot;weapon id 3&quot;));</span>
+	
+<span class="fc" id="L97">		return true;</span>
+		
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

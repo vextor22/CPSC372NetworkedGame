@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ShipTypeTracker.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactserver</a> &gt; <span class="el_source">ShipTypeTracker.java</span></div><h1>ShipTypeTracker.java</h1><pre class="source lang-java linenums">package cpsc3720.contactserver;
+
+import java.awt.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+public class ShipTypeTracker {
+
+	Map&lt;Integer,ShipType&gt; shipTypeMap;
+	private int idNum;
+<span class="fc" id="L13">	public ShipTypeTracker(){</span>
+<span class="fc" id="L14">		shipTypeMap = new HashMap&lt;Integer, ShipType&gt;();</span>
+<span class="fc" id="L15">		idNum = 0;</span>
+<span class="fc" id="L16">	}</span>
+	
+    public void addShipType(ShipType type) {	
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">    	if(validate(type)){</span>
+<span class="fc" id="L20">    		shipTypeMap.put(idNum, type);</span>
+<span class="fc" id="L21">    		idNum+=1;</span>
+    	}
+<span class="fc" id="L23">    }</span>
+    
+	public Collection&lt;ShipType&gt; getShipTypeList() {
+<span class="fc" id="L26">		return shipTypeMap.values();</span>
+	}
+
+	
+	//eventually this will return a list of all of the weapons to be presented and edited
+	public Map&lt;Integer, ShipType&gt; makeShipTypeList(){
+<span class="nc" id="L32">		return shipTypeMap;	</span>
+	}
+		
+	// Validate the date
+	private boolean validate(ShipType type){
+
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		for(int i = 0; i &lt; shipTypeMap.size(); i++){</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">			if(type.getShipTypeId().equals(shipTypeMap.get(i).getShipTypeId())){</span>
+<span class="nc" id="L40">				return false;</span>
+			}	
+		}
+<span class="fc" id="L43">		return true;</span>
+	}
+	
+	public boolean reset(){	
+<span class="nc" id="L47">		shipTypeMap.clear();</span>
+<span class="nc" id="L48">		idNum = 0;</span>
+<span class="nc" id="L49">		addShipType(new ShipType(&quot;Type1&quot;));</span>
+<span class="nc" id="L50">		addShipType(new ShipType(&quot;Type2&quot;));</span>
+<span class="nc" id="L51">		addShipType(new ShipType(&quot;Type3&quot;));</span>
+	
+<span class="nc" id="L53">		return true;</span>
+		
+	}
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

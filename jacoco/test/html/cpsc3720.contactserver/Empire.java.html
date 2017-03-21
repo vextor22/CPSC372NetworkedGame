@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Empire.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactserver</a> &gt; <span class="el_source">Empire.java</span></div><h1>Empire.java</h1><pre class="source lang-java linenums">package cpsc3720.contactserver;
+
+import java.util.ArrayList;
+
+public class Empire {
+	
+	private int idNum;
+	private String title;
+<span class="pc" id="L9">	private ArrayList&lt;Integer&gt; shipIds = new ArrayList&lt;&gt;(); // a list of ship ID numbers that are associated with a particular empire</span>
+	private boolean isAgressive;
+	private String strId;
+	
+	/*
+	 * An empire will have a specific id number and name or title.
+	 * Each empire will also have a list of associated ship numbers that 
+	 * any user in the empire can use.
+	 */
+<span class="fc" id="L18">	public Empire(){</span>
+<span class="fc" id="L19">		this.idNum = -1;</span>
+<span class="fc" id="L20">		this.title = &quot;Test Empire&quot;;</span>
+<span class="fc" id="L21">		ArrayList&lt;Integer&gt; temp = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L22">		this.shipIds = temp;</span>
+<span class="fc" id="L23">		this.isAgressive = false;</span>
+<span class="fc" id="L24">		this.strId = &quot;TEM&quot;;</span>
+<span class="fc" id="L25">	}</span>
+	
+<span class="nc" id="L27">	public Empire(String title){</span>
+<span class="nc" id="L28">		this.idNum = -1;</span>
+<span class="nc" id="L29">		this.title = title;</span>
+<span class="nc" id="L30">		ArrayList&lt;Integer&gt; temp = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L31">		this.shipIds = temp;</span>
+<span class="nc" id="L32">		this.isAgressive = false;</span>
+<span class="nc" id="L33">		this.strId = &quot;TEM&quot;;</span>
+<span class="nc" id="L34">	}</span>
+	
+<span class="fc" id="L36">	public Empire(String title, String empireId, boolean isAgreesive){</span>
+<span class="fc" id="L37">		this.idNum = -1;</span>
+<span class="fc" id="L38">		this.title = title;</span>
+<span class="fc" id="L39">		ArrayList&lt;Integer&gt; temp = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L40">		this.shipIds = temp;</span>
+<span class="fc" id="L41">		this.isAgressive = isAgressive;</span>
+<span class="fc" id="L42">		this.strId = empireId;</span>
+<span class="fc" id="L43">	}</span>
+	
+	
+<span class="fc" id="L46">	public Empire(int idNum, String title, String empireId, ArrayList&lt;Integer&gt; shipIds, boolean isAgressive){</span>
+<span class="fc" id="L47">		this.idNum = idNum;</span>
+<span class="fc" id="L48">		this.title = title;</span>
+<span class="fc" id="L49">		this.shipIds = shipIds;</span>
+<span class="fc" id="L50">		this.isAgressive = isAgressive;</span>
+<span class="fc" id="L51">		this.strId = empireId;</span>
+<span class="fc" id="L52">	}</span>
+	
+<span class="fc" id="L54">	public Empire(String title, String empireId, ArrayList&lt;Integer&gt; shipIds, boolean isAgressive) {</span>
+<span class="fc" id="L55">		this.idNum = -1;</span>
+<span class="fc" id="L56">		this.title = title;</span>
+<span class="fc" id="L57">		this.shipIds = shipIds;</span>
+<span class="fc" id="L58">		this.isAgressive = isAgressive;</span>
+<span class="fc" id="L59">		this.strId = empireId;</span>
+<span class="fc" id="L60">	}</span>
+	
+	@Override
+	public String toString() {
+<span class="fc" id="L64">		String isAgr = &quot;&quot;;</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">		if(this.isAgressive) isAgr = &quot;Agressive&quot;;</span>
+<span class="fc" id="L66">		else isAgr = &quot;Peaceful&quot;;</span>
+		
+<span class="fc" id="L68">		return &quot;Empire [idNum=&quot; + idNum + &quot;, title=&quot; + title + &quot;, shipIds=&quot;</span>
+				+ shipIds + &quot; AgressionType=&quot; + isAgr + &quot; strId=&quot; + strId + &quot;]&quot;;
+	}
+	
+	// Sets the title to the new title, and updates the ship id list
+	public Empire update(Empire empire){
+<span class="fc" id="L74">		this.title = empire.getTitle();</span>
+<span class="fc" id="L75">		this.isAgressive = empire.getAgressionType();</span>
+<span class="fc" id="L76">		this.strId = empire.getEmpireId();</span>
+		// Do I need to ensure that there is at least 1 ship in the list???
+<span class="fc" id="L78">		this.setShipIds(empire.getShipIds());</span>
+<span class="fc" id="L79">		return this;</span>
+	}
+
+	public int getIdNum() {
+<span class="fc" id="L83">		return idNum;</span>
+	}
+	
+	public void setIdNum(int idNum){
+<span class="fc" id="L87">		this.idNum=idNum;	</span>
+<span class="fc" id="L88">	}</span>
+	
+	public String getEmpireId(){
+<span class="fc" id="L91">		return this.strId;</span>
+	}
+	
+	public void setEmpireId(String empireId){
+<span class="nc" id="L95">		this.strId = empireId;</span>
+<span class="nc" id="L96">	}</span>
+	
+	public void setTitle(String title){
+<span class="nc" id="L99">		this.title = title;</span>
+<span class="nc" id="L100">	}</span>
+
+	public String getTitle() {
+<span class="fc" id="L103">		return title;</span>
+	}
+	
+	public boolean getAgressionType(){
+<span class="fc" id="L107">		return this.isAgressive;</span>
+	}
+	
+	public void setAgressionType(boolean isAgressive){
+<span class="nc" id="L111">		this.isAgressive = isAgressive;</span>
+<span class="nc" id="L112">	}</span>
+
+	public ArrayList&lt;Integer&gt; getShipIds() {
+<span class="fc" id="L115">		return shipIds;</span>
+	}
+	
+	// Updates ship list, and ensures that no duplicate ships are added
+	private void setShipIds(ArrayList&lt;Integer&gt; newShipIds){
+<span class="fc" id="L120">		this.shipIds.clear();</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">		for(int i = 0; i &lt; newShipIds.size(); i++){</span>
+<span class="fc" id="L122">			boolean hasDupe = false;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">			for(int j = 0; j &lt; shipIds.size(); j++){</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">				if(shipIds.get(j) == newShipIds.get(i)) hasDupe = true;</span>
+			}
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">			if(!hasDupe) this.shipIds.add(newShipIds.get(i));</span>
+		}
+<span class="fc" id="L128">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

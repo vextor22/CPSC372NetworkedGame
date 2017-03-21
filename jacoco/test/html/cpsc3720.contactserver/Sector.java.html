@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Sector.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactserver</a> &gt; <span class="el_source">Sector.java</span></div><h1>Sector.java</h1><pre class="source lang-java linenums">package cpsc3720.contactserver;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+<span class="pc bpc" id="L8" title="1 of 2 branches missed.">public class Sector {</span>
+	
+	//private ArrayList&lt;Sector&gt; sectorList;
+	private Map&lt;String, Cell&gt; theSector;
+	
+<span class="fc" id="L13">	public Sector(){</span>
+<span class="fc" id="L14">		theSector = new HashMap&lt;String, Cell&gt;();</span>
+		
+<span class="fc bfc" id="L16" title="All 2 branches covered.">		for(int i = 0; i &lt; 8; i++){</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">			for(int j = 0; j &lt; 8; j++){</span>
+<span class="fc" id="L18">				theSector.put(stringFromInts(i,j), new Cell());</span>
+			}
+		}
+<span class="fc" id="L21">	}</span>
+
+	private String stringFromInts(int x, int y){
+<span class="fc" id="L24">		return String.valueOf(x) + &quot;,&quot; + String.valueOf(y);</span>
+	}
+	
+	//inserts an obj, either ship, base or whatever to a cell in the sector 
+	public int addToSector(Object obj){
+<span class="pc bpc" id="L29" title="2 of 4 branches missed.">		assert(obj != null);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">		if(obj instanceof Ship){</span>
+			//Ship ship = new Ship(0,((Ship) obj).getShipType(), ((Ship) obj).getLocation(), ((Ship) obj).getEnergyLvl(), ((Ship) obj).getMissileQty(), ((Ship) obj).getAlertLvl(), ((Ship) obj).getShieldLvl());
+<span class="fc" id="L32">			theSector.get(stringFromInts(((Ship) obj).getLocation().getPXPos(),((Ship) obj).getLocation().getPYPos())).setShip((Ship)obj);</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">		}else if(obj instanceof Base){</span>
+			//Base base = new Base(((Base) obj).getBaseId(), ((Base) obj).getEmpireId(), ((Base) obj).getLocation());
+<span class="fc" id="L35">			theSector.get(stringFromInts(((Base) obj).getLocation().getPXPos(),((Base) obj).getLocation().getPYPos())).setBase((Base)obj);</span>
+		}
+<span class="fc" id="L37">		return 1;</span>
+	}
+
+	public int addToSector(String xy, String affil){
+		
+<span class="nc" id="L42">		theSector.get(xy).setShip(affil);</span>
+<span class="nc" id="L43">		System.out.println(&quot;Ship affiliation set in addToSector&quot;);</span>
+<span class="nc" id="L44">		return 1;</span>
+	}
+	
+	
+	
+	public Map&lt;String, Cell&gt; getTheSector() {
+<span class="nc" id="L50">		return theSector;</span>
+	}
+
+
+
+	@Override
+	public String toString() {
+<span class="nc" id="L57">		return &quot;Sector [theSector=&quot; + theSector + &quot;]&quot;;</span>
+	}
+
+
+
+	// takes in the object and replaces that cell with an empty cell
+	public void leaveSector(Object obj){
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		if(obj instanceof Ship){</span>
+<span class="nc" id="L65">			theSector.get(stringFromInts(((Ship) obj).getLocation().getPXPos(),((Ship) obj).getLocation().getPYPos())).leave();</span>
+		}
+<span class="nc bnc" id="L67" title="All 2 branches missed.">		else if(obj instanceof Base){</span>
+<span class="nc" id="L68">			theSector.get(stringFromInts(((Base) obj).getLocation().getPXPos(),((Base) obj).getLocation().getPYPos())).leave();</span>
+		}	
+<span class="nc" id="L70">	}</span>
+	
+	public String cellValue(int x, int y){ // returns a string the describes the object at the give sector coordinates
+<span class="nc" id="L73">		TypeEnum type =  theSector.get(stringFromInts(x,y)).getType();</span>
+
+<span class="nc bnc" id="L75" title="All 2 branches missed.">		if(type == TypeEnum.SHIP){</span>
+
+<span class="nc" id="L77">			return &quot;S&quot;;</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">		}else if(type == TypeEnum.BASE){</span>
+
+<span class="nc" id="L80">			return &quot;B&quot;;</span>
+		}else{
+<span class="nc" id="L82">			return &quot; &quot;;</span>
+		}
+	}
+	
+	public Ship getCellShip(int x, int y) throws NoObjectInCell{  // returns a string the describes the object at the give sector coordinates
+<span class="nc" id="L87">		TypeEnum type =  theSector.get(stringFromInts(x,y)).getType();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		if(type == TypeEnum.SHIP){</span>
+<span class="nc" id="L89">			return theSector.get(stringFromInts(x,y)).getShip();</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		}else if(type == TypeEnum.BASE){</span>
+<span class="nc" id="L91">			throw new NoObjectInCell();</span>
+		}else{
+<span class="nc" id="L93">			throw new NoObjectInCell();</span>
+		}
+	}
+		
+	
+		
+	public String sectorSummary(Player player){
+<span class="nc" id="L100">		int friend = 0;</span>
+<span class="nc" id="L101">		int foe = 0;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		if(player != null){</span>
+<span class="nc" id="L103">			String empId = player.getAffiliation();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">			for(int i = 0; i &lt; 8; i++){</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">				for(int j = 0; j &lt; 8; j++){</span>
+<span class="nc" id="L106">					TypeEnum type = theSector.get(stringFromInts(i,j)).getType();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">					if(type == TypeEnum.SHIP){</span>
+<span class="nc" id="L108">						Ship check = theSector.get(stringFromInts(i,j)).getShip();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">						if(((Ship) check).getShipType().getEmpireId().equals(empId)){</span>
+<span class="nc" id="L110">							friend+=1;</span>
+						}else{
+<span class="nc" id="L112">							foe+=1;</span>
+						}
+<span class="nc bnc" id="L114" title="All 2 branches missed.">					}else if(type == TypeEnum.BASE){</span>
+<span class="nc" id="L115">						Base check = theSector.get(stringFromInts(i,j)).getBase();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">						if(((Base) check).getEmpireId().equals(empId)){</span>
+<span class="nc" id="L117">							friend+=1;</span>
+						}else{
+<span class="nc" id="L119">							foe+=1;</span>
+						}
+					}
+				}
+			}
+		}
+		
+<span class="nc" id="L126">		return Integer.toString(friend) + &quot; , &quot; + Integer.toString(foe); // returns string value presented in universe view</span>
+	}
+	
+	//Will not get used until we move objects on the game board around
+	public void moveCell(Object obj, Location moveTo){
+<span class="nc" id="L131">		leaveSector(obj);</span>
+		
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if(obj instanceof Ship){</span>
+<span class="nc" id="L134">			((Ship) obj).setLocation(moveTo);</span>
+<span class="nc" id="L135">			addToSector(obj);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		}else if(obj instanceof Base){</span>
+<span class="nc" id="L137">			((Base) obj).setLocation(moveTo);</span>
+<span class="nc" id="L138">			addToSector(obj);</span>
+		}
+		
+		
+<span class="nc" id="L142">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

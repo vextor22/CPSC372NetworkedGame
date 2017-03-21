@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactserver</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package cpsc3720.contactserver;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+
+<span class="pc bpc" id="L7" title="1 of 2 branches missed.">public class Game {</span>
+	private ShipTracker shipTracker;
+	private Universe universeData;
+	private EmpireTracker empireTracker;
+	private WeaponTracker weaponTracker;
+	private PlayerTracker playerTracker;
+	private ShipTypeTracker shipTypeTracker;
+	private BaseTracker baseTracker;
+	private  int gameDate;
+	private String gameTitle;
+	private UserTracker registeredUsers;
+	
+<span class="fc" id="L19">	public Game(String filepath, UserTracker userTracker) throws IOException{</span>
+		//read file and populate trackers with objects as specified
+<span class="fc" id="L21">		universeData = new Universe(gameTitle);</span>
+<span class="fc" id="L22">		playerTracker = new PlayerTracker();</span>
+<span class="fc" id="L23">		shipTracker = new ShipTracker();</span>
+<span class="fc" id="L24">		empireTracker = new EmpireTracker(shipTracker);</span>
+<span class="fc" id="L25">		weaponTracker = new WeaponTracker(shipTracker);</span>
+<span class="fc" id="L26">		shipTypeTracker = new ShipTypeTracker();</span>
+<span class="fc" id="L27">		baseTracker = new BaseTracker();</span>
+		
+<span class="fc" id="L29">		registeredUsers = userTracker;</span>
+<span class="fc" id="L30">		System.out.println(filepath);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		if(filepath.equals(&quot;Civil War&quot;)){</span>
+<span class="fc" id="L32">			buildCivilWar();</span>
+		}else{
+<span class="fc" id="L34">			buildTrek();</span>
+		}
+<span class="fc" id="L36">	}</span>
+	
+	public Universe getUniverse(){
+<span class="fc" id="L39">		return universeData;</span>
+	}
+
+	public ShipTracker getShipTracker() {
+<span class="fc" id="L43">		return shipTracker;</span>
+	}
+
+	public EmpireTracker getEmpireTracker() {
+<span class="fc" id="L47">		return empireTracker;</span>
+	}
+
+	public WeaponTracker getWeaponTracker() {
+<span class="fc" id="L51">		return weaponTracker;</span>
+	}
+
+	public PlayerTracker getUserTracker() {
+<span class="fc" id="L55">		return playerTracker;</span>
+	}
+	public BaseTracker getBaseTracker(){
+<span class="fc" id="L58">		return baseTracker;</span>
+	}
+	
+	public ShipTypeTracker getShipTypeTracker() {
+<span class="fc" id="L62">		return shipTypeTracker;</span>
+	}
+	public String getTitle(){
+<span class="fc" id="L65">		return gameTitle;</span>
+	}
+	public int getDate(){
+<span class="fc" id="L68">		System.out.println(&quot;The star date is set to: &quot; + gameDate);</span>
+<span class="fc" id="L69">		return gameDate;</span>
+	}
+	
+
+	private void buildTrek(){
+		
+<span class="fc" id="L75">		gameDate = 2236;</span>
+<span class="fc" id="L76">		System.out.println(gameDate);</span>
+<span class="fc" id="L77">		gameTitle = &quot;Star Trek Forever&quot;;</span>
+						
+		//public Empire(String title, String empireId, boolean isAgreesive)
+<span class="fc" id="L80">		empireTracker.addEmpire(new Empire(&quot;Federation&quot;, &quot;FED&quot;, false));</span>
+<span class="fc" id="L81">		empireTracker.addEmpire(new Empire(&quot;Klingon&quot;, &quot;FED&quot;, true));</span>
+<span class="fc" id="L82">		empireTracker.addEmpire(new Empire(&quot;Bajoran&quot;, &quot;FED&quot;, false));</span>
+<span class="fc" id="L83">		empireTracker.addEmpire(new Empire(&quot;Cardassian&quot;, &quot;FED&quot;, true));</span>
+		
+		
+		//String title, boolean energyType, int yield, String weaponID
+<span class="fc" id="L87">		Weapon weapon1 = new Weapon(&quot;Phaser&quot;, true, 100, &quot;PHAS&quot;);</span>
+<span class="fc" id="L88">		Weapon weapon2 = new Weapon(&quot;Photon Torpedo&quot;, false, 300, &quot;PTOR&quot;);</span>
+<span class="fc" id="L89">		Weapon weapon3 = new Weapon(&quot;Antimatter Torpedo&quot;, false, 10000, &quot;ATOR&quot;);</span>
+<span class="fc" id="L90">		Weapon weapon4 = new Weapon(&quot;Gravimetric Torpedo&quot;, false, 800, &quot;GTOR&quot;);</span>
+<span class="fc" id="L91">		Weapon weapon5 = new Weapon(&quot;Pulse Cannon&quot;, true, 150, &quot;PCAN&quot;);</span>
+<span class="fc" id="L92">		weaponTracker.addWeapon(weapon1);</span>
+<span class="fc" id="L93">		weaponTracker.addWeapon(weapon2);</span>
+<span class="fc" id="L94">		weaponTracker.addWeapon(weapon3);</span>
+<span class="fc" id="L95">		weaponTracker.addWeapon(weapon4);</span>
+<span class="fc" id="L96">		weaponTracker.addWeapon(weapon5);</span>
+		
+<span class="fc" id="L98">		ShipType shipType1 = new ShipType(&quot;STC&quot; ,&quot;Starship&quot;, &quot;Constitution&quot;, &quot;FED&quot;, 3000 , 9, 500, &quot;PHAS&quot;, &quot;PTOR&quot;, 10);</span>
+<span class="fc" id="L99"> 		ShipType shipType2 = new ShipType(&quot;STM&quot; ,&quot;Starship&quot;, &quot;Miranda&quot;, &quot;FED&quot;, 4000 , 4, 400, &quot;PHAS&quot;, &quot;ATOR&quot;, 2);</span>
+<span class="fc" id="L100"> 		ShipType shipType3 = new ShipType(&quot;BOP&quot; ,&quot;Bird of Prey&quot;, &quot;D-12&quot;, &quot;KLI&quot;, 2500 , 5, 600, &quot;PCAN&quot;, &quot;GTOR&quot;, 5);</span>
+<span class="fc" id="L101"> 		ShipType shipType4 = new ShipType(&quot;CWS&quot; ,&quot;Cruiser&quot;, &quot;Galor&quot;, &quot;CAR&quot;, 2000 , 6, 300, &quot;PHAS&quot;, &quot;PTOR&quot;, 12);</span>
+<span class="fc" id="L102"> 		ShipType shipType5 = new ShipType(&quot;BWS&quot; ,&quot;Starship&quot;, &quot;Antares&quot;, &quot;BAJ&quot;, 2500 , 4, 300, &quot;PHAS&quot;, &quot;PTOR&quot;, 6);</span>
+ 		
+<span class="fc" id="L104"> 		shipTypeTracker.addShipType(shipType1);</span>
+<span class="fc" id="L105"> 		shipTypeTracker.addShipType(shipType2);</span>
+<span class="fc" id="L106"> 		shipTypeTracker.addShipType(shipType3);</span>
+<span class="fc" id="L107"> 		shipTypeTracker.addShipType(shipType4);</span>
+<span class="fc" id="L108"> 		shipTypeTracker.addShipType(shipType5);</span>
+ 		
+<span class="fc" id="L110"> 		Base base1 = new Base(0,&quot;FED&quot;, 2, 4,3, 2);</span>
+<span class="fc" id="L111"> 		Base base2 = new Base(0,&quot;FED&quot;, 2, 5,6, 7);</span>
+<span class="fc" id="L112"> 		Base base3 = new Base(0,&quot;KLI&quot;, 1, 1,2, 1);</span>
+ 		
+<span class="fc" id="L114"> 		baseTracker.addBase(new Base(0,&quot;FED&quot;, 2, 4,3, 2));</span>
+<span class="fc" id="L115">		baseTracker.addBase(new Base(0,&quot;FED&quot;, 2, 5,6, 7));</span>
+<span class="fc" id="L116">		baseTracker.addBase(new Base(0,&quot;KLI&quot;, 1, 1,2, 1));</span>
+ 		
+<span class="fc" id="L118"> 		Location loc1 = new Location(2,4,6,5);</span>
+<span class="fc" id="L119"> 		Location loc2 = new Location(2,5,4,4);</span>
+<span class="fc" id="L120"> 		Location loc3 = new Location(2,5,2,2);</span>
+<span class="fc" id="L121"> 		Location loc4 = new Location(3,6,1,5);</span>
+ 		
+<span class="fc" id="L123"> 		Ship ship1 = new Ship(0,shipType1, loc1, 2800, 8, AlertType.RED, 300);</span>
+<span class="fc" id="L124"> 		Ship ship2 = new Ship(1,shipType3, loc2, 1900, 7, AlertType.YELLOW, 400);</span>
+<span class="fc" id="L125"> 		Ship ship3 = new Ship(1,shipType2, loc3, 3000, 2, AlertType.YELLOW, 200);</span>
+<span class="fc" id="L126"> 		Ship ship4 = new Ship(1,shipType3, loc4, 1500, 1, AlertType.YELLOW, 5);</span>
+ 		
+ 		
+<span class="fc" id="L129"> 		shipTracker.addShip(new Ship(0,shipType1, loc1, 2800, 8, AlertType.RED, 300));</span>
+<span class="fc" id="L130"> 		shipTracker.addShip(new Ship(1,shipType3, loc2, 1900, 7, AlertType.YELLOW, 400));</span>
+<span class="fc" id="L131"> 		shipTracker.addShip(new Ship(1,shipType2, loc3, 3000, 2, AlertType.YELLOW, 200));</span>
+<span class="fc" id="L132"> 		shipTracker.addShip(new Ship(1,shipType3, loc4, 1500, 1, AlertType.YELLOW, 5));</span>
+ 		
+<span class="fc" id="L134"> 		Collection&lt;Ship&gt; shipList = shipTracker.getShipList();</span>
+		
+<span class="pc bpc" id="L136" title="2 of 4 branches missed.">		assert(universeData != null);</span>
+		
+		
+<span class="fc" id="L139">		universeData.setSector(ship1.getLocation().getSXPos(), ship1.getLocation().getSYPos(), ship1);</span>
+<span class="fc" id="L140">		universeData.setSector(ship2.getLocation().getSXPos(), ship2.getLocation().getSYPos(), ship2);</span>
+<span class="fc" id="L141">		universeData.setSector(ship3.getLocation().getSXPos(), ship3.getLocation().getSYPos(), ship3);</span>
+<span class="fc" id="L142">		universeData.setSector(ship4.getLocation().getSXPos(), ship4.getLocation().getSYPos(), ship4);</span>
+		
+<span class="fc" id="L144">		universeData.setSector(base1.getLocation().getSXPos(), base1.getLocation().getSYPos(), base1);</span>
+<span class="fc" id="L145">		universeData.setSector(base2.getLocation().getSXPos(), base2.getLocation().getSYPos(), base2);</span>
+<span class="fc" id="L146">		universeData.setSector(base3.getLocation().getSXPos(), base3.getLocation().getSYPos(), base3);</span>
+		
+
+<span class="fc" id="L149">		playerTracker.add(new Player(registeredUsers.makeUserList().get(1).getUserName(), &quot;FED&quot;, 0));</span>
+<span class="fc" id="L150">		playerTracker.add(new Player(registeredUsers.makeUserList().get(2).getUserName(), &quot;KLI&quot;, 1));</span>
+		
+		
+				
+<span class="fc" id="L154">	}</span>
+	
+	private void buildCivilWar() {
+			
+<span class="fc" id="L158">		gameDate = 1862;</span>
+<span class="fc" id="L159">		gameTitle = &quot;Civil War&quot;;</span>
+		
+		//create Empires
+<span class="fc" id="L162">		empireTracker.addEmpire(new Empire(&quot;Union&quot;, &quot;NOR&quot;, true));</span>
+<span class="fc" id="L163">		empireTracker.addEmpire(new Empire(&quot;Confederacy&quot;, &quot;SOU&quot;, false));</span>
+		
+		
+		// CREATE WEAPONS
+<span class="fc" id="L167"> 		weaponTracker.addWeapon(new Weapon(&quot;Water Cannon&quot; ,true, 10, &quot;CAN&quot;));</span>
+<span class="fc" id="L168"> 		weaponTracker.addWeapon(new Weapon(&quot;Torpedo&quot;, false, 30, &quot;TOR&quot;));</span>
+ 		
+ 		
+ 		//CREATE SHIPTYPE
+<span class="fc" id="L172"> 		ShipType shipType1 = new ShipType(&quot;MON&quot; ,&quot;Monitor&quot;, &quot;Ironclad&quot;, &quot;NOR&quot;, 300 , 9, 50, &quot;CAN&quot;, &quot;TOR&quot;, 10);</span>
+<span class="fc" id="L173"> 		ShipType shipType2 = new ShipType(&quot;SUB&quot; ,&quot;Submarine&quot;, &quot;Submarine&quot;, &quot;SOU&quot;, 400 , 4, 40, &quot;CAN&quot;, &quot;TOR&quot;, 2);</span>
+<span class="fc" id="L174"> 		shipTypeTracker.addShipType(shipType1);</span>
+<span class="fc" id="L175"> 		shipTypeTracker.addShipType(shipType2);</span>
+ 		
+ 		
+ 		//CREATE BASE
+<span class="fc" id="L179"> 		Base base1 = new Base(0,&quot;NOR&quot;, 3, 5,2, 1);</span>
+<span class="fc" id="L180"> 		Base base2 = new Base(1,&quot;SOU&quot;,2, 4, 3 ,2);</span>
+<span class="fc" id="L181"> 		baseTracker.addBase(base1);</span>
+<span class="fc" id="L182"> 		baseTracker.addBase(base2);</span>
+ 		
+ 		//add to the sector
+<span class="fc" id="L185"> 		universeData.setSector(base1.getLocation().getSXPos(), base1.getLocation().getSYPos(), base1);</span>
+<span class="fc" id="L186"> 		universeData.setSector(base2.getLocation().getSXPos(), base2.getLocation().getSYPos(), base2);</span>
+
+		//CREATE SHIPS
+<span class="fc" id="L189"> 		Location loc1 = new Location(3,4,4,3);</span>
+<span class="fc" id="L190"> 		Location loc2 = new Location(2,5,2,1);</span>
+ 		
+<span class="fc" id="L192"> 		Ship ship1 = new Ship(0,shipType1, loc1, 280, 8, AlertType.RED, 30);</span>
+<span class="fc" id="L193"> 		Ship ship2 = new Ship(1,shipType2, loc2, 190, 2, AlertType.YELLOW, 40);</span>
+<span class="fc" id="L194"> 		shipTracker.addShip(ship1);</span>
+<span class="fc" id="L195"> 		shipTracker.addShip(ship2);</span>
+ 		//add ships to the sectors
+ 		
+<span class="fc" id="L198"> 		universeData.setSector(ship1.getLocation().getSXPos(), ship1.getLocation().getSYPos(), ship1);</span>
+<span class="fc" id="L199"> 		universeData.setSector(ship2.getLocation().getSXPos(), ship2.getLocation().getSYPos(), ship2);</span>
+ 		
+ 		//create Players
+<span class="fc" id="L202"> 		playerTracker.add(new Player(&quot;lee&quot;, &quot;SOU&quot;, 1));</span>
+<span class="fc" id="L203"> 		playerTracker.add(new Player(&quot;grant&quot;, &quot;NOR&quot;, 0));</span>
+		
+		
+		
+<span class="fc" id="L207">	}</span>
+	@Override
+	public String toString() {
+<span class="nc" id="L210">		return &quot;Game [shipTracker=&quot; + shipTracker + &quot;, universeInstance=&quot;</span>
+				+ universeData + &quot;, empireTracker=&quot; + empireTracker
+				+ &quot;, weaponTracker=&quot; + weaponTracker + &quot;, playerTracker=&quot;
+				+ playerTracker + &quot;, gameDate=&quot; + gameDate + &quot;, gameTitle=&quot;
+				+ gameTitle + &quot;, registeredUsers=&quot; + registeredUsers + &quot;]&quot;;
+	}
+
+	public Map&lt;Integer, Player&gt; getPlayerMap() {
+		// TODO Auto-generated method stub
+<span class="fc" id="L219">		return playerTracker.getPlayerMap();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

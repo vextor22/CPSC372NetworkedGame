@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Location.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactserver</a> &gt; <span class="el_source">Location.java</span></div><h1>Location.java</h1><pre class="source lang-java linenums">package cpsc3720.contactserver;
+
+public class Location {
+	private int sectXPos;
+	private int sectYPos;
+	private int ptXPos;
+	private int ptYPos;
+	
+<span class="fc" id="L9">	public Location(){</span>
+<span class="fc" id="L10">		this.sectXPos = -1;</span>
+<span class="fc" id="L11">		this.sectYPos = -1;</span>
+<span class="fc" id="L12">		this.ptXPos = -1;</span>
+<span class="fc" id="L13">		this.ptYPos = -1;</span>
+<span class="fc" id="L14">	}</span>
+	
+<span class="fc" id="L16">	public Location(int sx, int sy, int px, int py){</span>
+<span class="fc" id="L17">		this.sectXPos = sx;</span>
+<span class="fc" id="L18">		this.sectYPos = sy;</span>
+<span class="fc" id="L19">		this.ptXPos = px;</span>
+<span class="fc" id="L20">		this.ptYPos = py;</span>
+<span class="fc" id="L21">	}</span>
+	
+	public int getSXPos(){
+<span class="fc" id="L24">		return this.sectXPos;</span>
+	}
+	
+	public int getSYPos(){
+<span class="fc" id="L28">		return this.sectYPos;</span>
+	}
+	
+	public int getPXPos(){
+<span class="fc" id="L32">		return this.ptXPos;</span>
+	}
+	
+	public int getPYPos(){
+<span class="fc" id="L36">		return this.ptYPos;</span>
+	}
+	
+	public void setSXPos(int sx){
+<span class="nc" id="L40">		this.sectXPos = sx;</span>
+<span class="nc" id="L41">	}</span>
+	
+	public void setSYPos(int sy){
+<span class="nc" id="L44">		this.sectYPos = sy;</span>
+<span class="nc" id="L45">	}</span>
+	
+	public void setPXPos(int px){
+<span class="nc" id="L48">		this.ptXPos = px;</span>
+<span class="nc" id="L49">	}</span>
+	
+	public void setPYPos(int py){
+<span class="nc" id="L52">		this.ptYPos = py;</span>
+<span class="nc" id="L53">	}</span>
+	
+	
+	//takes in a location and checks if it is the same as the current location
+	public boolean isSameLocation(Location check){
+<span class="pc bpc" id="L58" title="7 of 8 branches missed.">		if(this.ptXPos == check.ptXPos &amp;&amp; this.ptYPos == check.ptYPos &amp;&amp; this.sectXPos == check.sectXPos &amp;&amp; this.sectYPos == check.sectYPos){</span>
+<span class="nc" id="L59">			return true;</span>
+		}
+<span class="fc" id="L61">		return false;</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

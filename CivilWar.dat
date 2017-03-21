@@ -1,0 +1,30 @@
+Title	Stardate
+Civil War	1862
+
+Empire Id	Name	MissionType
+NOR	Union	Aggression
+SOU	Confederacy	Exploration
+
+Weapon Id	Name	Type	Max Yield
+CAN	Water Cannon	ENERGY	10
+TOR	Torpedo	MISSILE	30
+
+ShipType Id	Name	Class	Empire	Max Energy	Max Speed	Max Shields	EnWepType	MisWepType	Max Missile
+MON	Monitor	Ironclad	NOR	300	9	50	CAN	TOR	10
+SUB	Submarine	Submarine	SOU	400	4	40	CAN	TOR	2
+
+
+Base Id	Empire	SX	SY	PX	PY
+0	NOR	3	5	2	1
+1	SOU	2	4	3	2
+
+Ship ID	Type	SX	SY	PX	PY	Energy	Missile Qty	Alert	Shield
+0	MON	3	4	4	3	280	8	RED	30
+1	SUB	2	5	2	1	190	2	YELLOW	40
+2	SUB	4	3	3	3	300	5	RED	50	
+3	MON	5	2	6	4	250	4	RED	60
+
+
+Player ID	Affiliation	Ship
+lee	SOU	1
+grant	NOR	0

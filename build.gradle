@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+apply plugin: 'jacoco'
+
+mainClassName = 'cpsc3720.contactserver.ContactServer'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    jcenter()
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web:1.3.0.M4'   
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'net.sf.opencsv:opencsv:2.3'
+
+
+  testCompile 'junit:junit:4.12'
+    //testCompile group: 'junit', name: 'junit', version: '4.12'
+    
+}
+
+
+// Set properties for testing and running server from command line
+if (System.properties['servertest']) 
+  test.systemProperties['servertest'] = System.properties['servertest']
+
+if (System.properties['server.port']) 	 
+  run.systemProperties['server.port'] = System.properties['server.port']
+
+// Set properties for running client from command line
+if (System.properties['server.name'])    
+  run.systemProperties['server.name'] = System.properties['server.name']

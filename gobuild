@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# Script for building and running unit tests
+#
+# To Execute: 
+#     bash gobuild
+#
+# NOTE: This file must be converted to use Linux line ending characters
+# using the following before it will run correctly:
+#     dos2unix gobuild
+
+echo Launching build...
+
+if bash gradlew -Dservertest=1 clean build jacocoTestReport
+then
+  echo Build complete. Test reports are available in build/reports. Launching firefox...
+  firefox build/reports/tests/index.html build/reports/jacoco/test/html/index.html &
+fi

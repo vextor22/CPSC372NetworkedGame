@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Ship.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactserver</a> &gt; <span class="el_source">Ship.java</span></div><h1>Ship.java</h1><pre class="source lang-java linenums">package cpsc3720.contactserver;
+
+/*
+ * There will be multiple types of ships
+ */
+
+
+public class Ship {
+	//private enum alertType{ GREEN, YELLOW, RED };
+	
+	private int idNum;
+	private ShipType shipType;
+	private Location loc;
+	private int energyLvl;
+	private int missileQty;
+	private AlertType alertLvl;
+	private int shieldLvl;
+	
+	/*
+	Ship ID	Type	SX	SY	PX	PY	Energy	Missile Qty	Alert	Shield
+	0	    STC	    2	4	6	5	2800	   8	     RED	 300
+	1	    BOP	    2	5	4	4	1900	   7	     YELLOW	 400
+	2	    STM	    2	5	2	2	3000	   2	     YELLOW	 300
+	3	    BOP	    3	6	1	5	1500	   1	     RED	 5
+	*/
+
+<span class="fc" id="L27">	public Ship(){</span>
+<span class="fc" id="L28">		this.idNum = -1;</span>
+<span class="fc" id="L29">		this.shipType = new ShipType(&quot;test&quot;);</span>
+<span class="fc" id="L30">		this.loc = new Location();</span>
+<span class="fc" id="L31">		this.energyLvl = 0;</span>
+<span class="fc" id="L32">		this.missileQty = 0;</span>
+<span class="fc" id="L33">		this.alertLvl = AlertType.GREEN;</span>
+<span class="fc" id="L34">		this.shieldLvl = 0;</span>
+<span class="fc" id="L35">	}</span>
+	
+	
+<span class="fc" id="L38">	public Ship(ShipType shipType, Location location, int energyLevel, int missileQuantity, AlertType alertLevel, int shieldLevel) {</span>
+<span class="fc" id="L39">		this.idNum = -1;</span>
+<span class="fc" id="L40">		this.shipType = shipType;</span>
+<span class="fc" id="L41">		this.loc = location;</span>
+<span class="fc" id="L42">		this.energyLvl = energyLevel;</span>
+<span class="fc" id="L43">		this.missileQty = missileQuantity;</span>
+<span class="fc" id="L44">		this.alertLvl = alertLevel;</span>
+<span class="fc" id="L45">		this.shieldLvl = shieldLevel;</span>
+<span class="fc" id="L46">	}</span>
+<span class="fc" id="L47">	public Ship(int idNum, ShipType shipType, Location location, int energyLevel, int missileQuantity, AlertType alertLevel, int shieldLevel) {</span>
+<span class="fc" id="L48">		this.idNum = idNum;</span>
+<span class="fc" id="L49">		this.shipType = shipType;</span>
+<span class="fc" id="L50">		this.loc = location;</span>
+<span class="fc" id="L51">		this.energyLvl = energyLevel;</span>
+<span class="fc" id="L52">		this.missileQty = missileQuantity;</span>
+<span class="fc" id="L53">		this.alertLvl = alertLevel;</span>
+<span class="fc" id="L54">		this.shieldLvl = shieldLevel;</span>
+<span class="fc" id="L55">	}</span>
+		
+	@Override
+	public String toString(){
+
+<span class="fc" id="L60">		return &quot;Ship [idNum=&quot; + idNum + &quot;, shipType=&quot; + shipType.getName() + &quot;, energyLvl=&quot;</span>
+		+ energyLvl + &quot;, missileQty=&quot; + missileQty + &quot;, alertLvl=&quot; + alertLvl + &quot;, shieldLvl=&quot; + shieldLvl + &quot;]&quot;;		
+		
+	}
+	
+	public String getTitle(){
+<span class="fc" id="L66">		return shipType.getName();</span>
+	}
+	
+	public Ship update(Ship ship){
+<span class="nc" id="L70">		this.idNum = idNum;</span>
+<span class="nc" id="L71">		this.shipType = ship.getShipType();</span>
+<span class="nc" id="L72">		this.loc = ship.getLocation();</span>
+<span class="nc" id="L73">		this.energyLvl = ship.getEnergyLvl();</span>
+<span class="nc" id="L74">		this.missileQty = ship.getMissileQty();</span>
+<span class="nc" id="L75">		this.alertLvl = ship.getAlertLvl();</span>
+<span class="nc" id="L76">		this.shieldLvl = ship.getShieldLvl();</span>
+<span class="nc" id="L77">		return this;</span>
+	}
+	
+	public int getIdNum() {
+<span class="fc" id="L81">		return idNum;</span>
+	}
+
+	public ShipType getShipType(){
+<span class="fc" id="L85">		return this.shipType;</span>
+	}
+	
+	public Location getLocation(){
+<span class="fc" id="L89">		return this.loc;</span>
+	}
+	
+	public int getEnergyLvl(){
+<span class="nc" id="L93">		return this.energyLvl;</span>
+	}
+	
+	public int getMissileQty(){
+<span class="nc" id="L97">		return this.missileQty;</span>
+	}
+	
+	public AlertType getAlertLvl(){
+<span class="nc" id="L101">		return this.alertLvl;</span>
+	}
+	
+	public int getShieldLvl(){
+<span class="nc" id="L105">		return this.shieldLvl;</span>
+	}
+	
+	
+	
+	void setIdNum(int idNum){
+<span class="fc" id="L111">		this.idNum = idNum;</span>
+<span class="fc" id="L112">	}</span>
+	
+	public void setShipType(ShipType shipType){
+<span class="nc" id="L115">		this.shipType = shipType;</span>
+<span class="nc" id="L116">	}</span>
+	
+	public void setLocation(Location location){
+<span class="nc" id="L119">		this.loc = location;</span>
+<span class="nc" id="L120">	}</span>
+	
+	public void setEnergyLvl(int energyLevel){
+<span class="nc" id="L123">		this.energyLvl = energyLevel;</span>
+<span class="nc" id="L124">	}</span>
+	
+	public void setMissileQty(int missilQuantity){
+<span class="nc" id="L127">		this.missileQty = missilQuantity;</span>
+<span class="nc" id="L128">	}</span>
+	
+	public void setAlertLvl(AlertType alertLevel){
+<span class="nc" id="L131">		this.alertLvl = alertLevel;</span>
+<span class="nc" id="L132">	}</span>
+	
+	public void setShieldLvl(int shieldLevel){
+<span class="nc" id="L135">		this.shieldLvl = shieldLevel;</span>
+<span class="nc" id="L136">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

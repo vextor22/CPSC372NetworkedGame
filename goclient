@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# Script for building and running unit tests
+#
+# To Execute: 
+#     bash goclient
+#
+# NOTE: This file must be converted to use Linux line ending characters
+# using the following before it will run correctly:
+#     dos2unix goclient
+
+echo Launching client...
+bash gradlew -b client.gradle run

@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MainGameScreen.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactclient</a> &gt; <span class="el_source">MainGameScreen.java</span></div><h1>MainGameScreen.java</h1><pre class="source lang-java linenums">package cpsc3720.contactclient;
+
+
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferStrategy;
+import java.util.Collection;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import cpsc3720.contactserver.AlertType;
+import cpsc3720.contactserver.Base;
+import cpsc3720.contactserver.ContactServer;
+import cpsc3720.contactserver.Game;
+import cpsc3720.contactserver.GameNotFoundException;
+import cpsc3720.contactserver.Location;
+import cpsc3720.contactserver.NoObjectInCell;
+import cpsc3720.contactserver.Pair;
+import cpsc3720.contactserver.Player;
+import cpsc3720.contactserver.Sector;
+import cpsc3720.contactserver.Ship;
+import cpsc3720.contactserver.ShipType;
+import cpsc3720.contactserver.Universe;
+import cpsc3720.contactservice.ContactService;
+import retrofit.RestAdapter;
+import retrofit.RestAdapter.LogLevel;
+
+import javax.swing.table.DefaultTableModel;
+
+
+public class MainGameScreen extends JFrame {
+
+	private JPanel contentPane;
+	private Universe universe;
+	private BufferStrategy strategy;
+<span class="nc" id="L51">	private final Pair currentSector = new Pair(0,0);</span>
+	private JTable sectorTable;
+	private int cellSelectedCol;
+	private int cellSelectedRow;
+	
+	
+
+	/**
+	 * Create the frame.
+	 */
+<span class="nc" id="L61">	public MainGameScreen(final String gameName, final String globalFont) {</span>
+<span class="nc" id="L62">final ContactService service = new RestAdapter.Builder()</span>
+				
+
+				.setEndpoint(&quot;http://localhost:8080&quot;)
+				.build()
+				.create(ContactService.class);
+
+
+<span class="nc" id="L70">		System.out.println(&quot;reset for test&quot;);</span>
+<span class="nc" id="L71">		service.resetForTest();</span>
+<span class="nc" id="L72">		setTitle(gameName);</span>
+		
+<span class="nc" id="L74">		final SectorTableModel model = new SectorTableModel();</span>
+<span class="nc" id="L75">		final JTable universeTable = new JTable();</span>
+		
+		
+<span class="nc" id="L78">		JLabel lblNewLabel = new JLabel(&quot;Ship View: &quot;);</span>
+		
+		// fill ship name
+<span class="nc" id="L81">		final JLabel selectedShipName = new JLabel(&quot;Ship Name Here&quot;);</span>
+		
+<span class="nc" id="L83">		JLabel lblEnergyLevel = new JLabel(&quot;Energy Level: &quot;);</span>
+<span class="nc" id="L84">		JLabel lblTorpedoCount = new JLabel(&quot;Torpedo Count: &quot;);</span>
+<span class="nc" id="L85">		JLabel lblShieldCount = new JLabel(&quot;Shield Count: &quot;);</span>
+<span class="nc" id="L86">		JLabel lblAlertLevel = new JLabel(&quot;Alert Level: &quot;);</span>
+<span class="nc" id="L87">		JLabel lblClass = new JLabel(&quot;Class: &quot;);</span>
+<span class="nc" id="L88">		JLabel affiliationLabel = new JLabel(&quot;Affiliation: &quot;);</span>
+		
+		
+		// fill these fields
+<span class="nc" id="L92">		final JLabel lblShipAffiliation = new JLabel(&quot; &quot;);</span>
+<span class="nc" id="L93">		final JLabel lblShipClass = new JLabel(&quot; &quot;);</span>
+<span class="nc" id="L94">		final JLabel lblShipAlertness = new JLabel(&quot; &quot;);</span>
+<span class="nc" id="L95">		final JLabel lblShipShieldCount = new JLabel(&quot; &quot;);</span>
+<span class="nc" id="L96">		final JLabel lblShipTorpedoCount = new JLabel(&quot; &quot;);</span>
+<span class="nc" id="L97">		final JLabel lblShipEnergyLvl = new JLabel(&quot; &quot;);</span>
+		
+		
+<span class="nc" id="L100">		setResizable(false);</span>
+<span class="nc" id="L101">		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L102">		setBounds(100, 100, 1024, 768);</span>
+<span class="nc" id="L103">		contentPane = new JPanel();</span>
+<span class="nc" id="L104">		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));</span>
+<span class="nc" id="L105">		setContentPane(contentPane);</span>
+<span class="nc" id="L106">		contentPane.setLayout(null);</span>
+		
+<span class="nc" id="L108">		JPanel attackLogPanel = new JPanel();</span>
+<span class="nc" id="L109">		attackLogPanel.setBackground(Color.WHITE);</span>
+<span class="nc" id="L110">		attackLogPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));</span>
+<span class="nc" id="L111">		attackLogPanel.setBounds(12, 509, 535, 213);</span>
+<span class="nc" id="L112">		contentPane.add(attackLogPanel);</span>
+<span class="nc" id="L113">		attackLogPanel.setLayout(null);</span>
+		
+<span class="nc" id="L115">		JLabel lblAttackLog = new JLabel(&quot;Attack Log&quot;);</span>
+<span class="nc" id="L116">		lblAttackLog.setFont(new Font(globalFont, Font.BOLD, 13));</span>
+<span class="nc" id="L117">		lblAttackLog.setBounds(12, 13, 82, 16);</span>
+<span class="nc" id="L118">		attackLogPanel.add(lblAttackLog);</span>
+		
+<span class="nc" id="L120">		JSeparator separator = new JSeparator();</span>
+<span class="nc" id="L121">		separator.setBackground(Color.BLACK);</span>
+<span class="nc" id="L122">		separator.setForeground(Color.BLACK);</span>
+<span class="nc" id="L123">		separator.setBounds(0, 38, 535, 2);</span>
+<span class="nc" id="L124">		attackLogPanel.add(separator);</span>
+		
+<span class="nc" id="L126">		JPanel greyPanel = new JPanel();</span>
+<span class="nc" id="L127">		greyPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));</span>
+<span class="nc" id="L128">		greyPanel.setBackground(Color.LIGHT_GRAY);</span>
+<span class="nc" id="L129">		greyPanel.setBounds(0, 0, 535, 39);</span>
+<span class="nc" id="L130">		attackLogPanel.add(greyPanel);</span>
+		
+<span class="nc" id="L132">		JList attackLogList = new JList();</span>
+<span class="nc" id="L133">		attackLogList.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L134">		attackLogList.setBounds(12, 53, 511, 147);</span>
+<span class="nc" id="L135">		attackLogPanel.add(attackLogList);</span>
+		
+<span class="nc" id="L137">		JPanel actionsPanel = new JPanel();</span>
+<span class="nc" id="L138">		actionsPanel.setBorder(null);</span>
+<span class="nc" id="L139">		actionsPanel.setBounds(548, 546, 458, 176);</span>
+<span class="nc" id="L140">		contentPane.add(actionsPanel);</span>
+<span class="nc" id="L141">		actionsPanel.setLayout(null);</span>
+		
+<span class="nc" id="L143">		JButton navigateButton = new JButton(&quot;Navigate&quot;);</span>
+<span class="nc" id="L144">		navigateButton.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L145">		navigateButton.setBounds(50, 25, 130, 25);</span>
+<span class="nc" id="L146">		actionsPanel.add(navigateButton);</span>
+		
+<span class="nc" id="L148">		JButton setAlertButton = new JButton(&quot;Set Alert&quot;);</span>
+<span class="nc" id="L149">		setAlertButton.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L150">		setAlertButton.setBounds(50, 75, 130, 25);</span>
+<span class="nc" id="L151">		actionsPanel.add(setAlertButton);</span>
+		try {
+<span class="nc" id="L153">			universe = service.getUniverse(gameName);</span>
+<span class="nc" id="L154">		} catch (GameNotFoundException e1) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L156">			e1.printStackTrace();</span>
+<span class="nc" id="L157">		}</span>
+		// Scan Button ===================================================================
+<span class="nc" id="L159">		JButton scanButton = new JButton(&quot;Scan&quot;);</span>
+<span class="nc" id="L160">		scanButton.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L161">		scanButton.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L163">				currentSector.setX(universeTable.getSelectedRow());</span>
+<span class="nc" id="L164">				currentSector.setY(universeTable.getSelectedColumn());</span>
+<span class="nc" id="L165">				System.out.println(&quot;universe selected cell: &quot; + universeTable.getSelectedColumn() + &quot;,&quot; + universeTable.getSelectedRow());</span>
+<span class="nc" id="L166">				model.setSector(universeTable.getSelectedRow(), universeTable.getSelectedColumn(), universe);</span>
+<span class="nc" id="L167">				model.fireTableDataChanged();</span>
+<span class="nc" id="L168">			}</span>
+		});
+<span class="nc" id="L170">		scanButton.setBounds(50, 125, 130, 25);</span>
+<span class="nc" id="L171">		actionsPanel.add(scanButton);</span>
+		
+		// Quit Button
+<span class="nc" id="L174">		JButton quitButton = new JButton(&quot;Quit&quot;);</span>
+<span class="nc" id="L175">		quitButton.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L176">		quitButton.addActionListener(new ActionListener() {</span>
+			public void actionPerformed(ActionEvent arg0){
+<span class="nc" id="L178">				JoinGameFrame jgFrame = new JoinGameFrame(globalFont);</span>
+<span class="nc" id="L179">				jgFrame.setVisible(true);</span>
+<span class="nc" id="L180">				dispose();</span>
+<span class="nc" id="L181">			}</span>
+		});
+<span class="nc" id="L183">		quitButton.setBounds(279, 125, 130, 25);</span>
+<span class="nc" id="L184">		actionsPanel.add(quitButton);</span>
+		
+<span class="nc" id="L186">		JButton refreshButton = new JButton(&quot;Refresh&quot;);</span>
+<span class="nc" id="L187">		refreshButton.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L188">		refreshButton.setBounds(279, 75, 130, 25);</span>
+<span class="nc" id="L189">		actionsPanel.add(refreshButton);</span>
+		
+<span class="nc" id="L191">		JButton fireTorpedoButton = new JButton(&quot;Fire Torpedo&quot;);</span>
+<span class="nc" id="L192">		fireTorpedoButton.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L193">		fireTorpedoButton.setBounds(279, 25, 130, 25);</span>
+<span class="nc" id="L194">		actionsPanel.add(fireTorpedoButton);</span>
+		/***********************************************
+		 * End Buttons
+		 ***********************************************/
+		
+		/***********************************************
+		 * Universe View
+		 ***********************************************/
+		
+		try {
+<span class="nc" id="L204">		Game theGame = service.getGame(gameName);</span>
+<span class="nc" id="L205">		System.out.println(&quot;checking for game: &quot;+ gameName);</span>
+<span class="nc" id="L206">		Universe thisUniv = service.getUniverse(gameName);</span>
+				
+<span class="nc" id="L208">		JPanel universeViewPanel = new JPanel();</span>
+<span class="nc" id="L209">		universeViewPanel.setBounds(756, 39, 248, 248);</span>
+<span class="nc" id="L210">		contentPane.add(universeViewPanel);</span>
+<span class="nc" id="L211">		universeViewPanel.setLayout(null);</span>
+		
+<span class="nc" id="L213">		Player player = service.getPlayerMap(gameName).get(0);</span>
+<span class="nc" id="L214">		System.out.println(player.getPlayerId());</span>
+<span class="nc" id="L215">		System.out.println(player.getAffiliation());</span>
+		
+<span class="nc" id="L217">		UniverseTableModel univModel = new UniverseTableModel(player);</span>
+<span class="nc" id="L218">		univModel.setUniverseTable(thisUniv);</span>
+		
+		
+		// Universe Table Listener =============================================================
+		
+		
+<span class="nc" id="L224">		universeTable.setCellSelectionEnabled(true);</span>
+		/*
+	    ListSelectionModel cellSelectionModel = universeTable.getSelectionModel();
+	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+	    	public void valueChanged(ListSelectionEvent e) {
+	    		if (!e.getValueIsAdjusting()) {
+                	universeTableSelected.setX(universeTable.getSelectedColumn());
+                	universeTableSelected.setY(universeTable.getSelectedRow());
+                }
+	    	}
+	    });
+		*/
+	    
+		/*
+		 * sectorTable.addTableSelectionListener(new ListSelectionListener() {
+
+	            @Override
+	            public void valueChanged(ListSelectionEvent arg0) {
+	                if (!arg0.getValueIsAdjusting()) {
+	                	sectorTableSelected.setX(sectorTable.getSelectedColumn());
+	                	sectorTableSelected.setY(sectorTable.getSelectedRow());
+	                }
+	            }
+	        });
+		 */
+		
+		
+		
+		
+		
+		
+		
+<span class="nc" id="L258">		universeTable.setFont(new Font(globalFont, Font.PLAIN, 10));</span>
+<span class="nc" id="L259">		universeTable.setBorder(new LineBorder(new Color(0, 0, 0)));</span>
+<span class="nc" id="L260">		universeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);</span>
+<span class="nc" id="L261">		universeTable.setCellSelectionEnabled(true);</span>
+
+<span class="nc" id="L263">		universeTable.setRowHeight(31);</span>
+<span class="nc" id="L264">		universeTable.setBounds(0, 0, 248, 248);</span>
+<span class="nc" id="L265">		universeViewPanel.add(universeTable);</span>
+<span class="nc" id="L266">		universeViewPanel.setFont(Font.getFont(globalFont));</span>
+
+<span class="nc" id="L268">		univModel.fireTableDataChanged();</span>
+<span class="nc" id="L269">		universeTable.setModel(univModel);</span>
+
+		/***********************************************
+		 * End Universe View
+		 ***********************************************/
+		
+		/***********************************************
+		 * Sector View
+		 ***********************************************/		
+
+<span class="nc" id="L279">			model.setSector(2,5, thisUniv); // start selected</span>
+<span class="nc" id="L280">			currentSector.setX(2);</span>
+<span class="nc" id="L281">			currentSector.setY(5);</span>
+
+			// Sector Table
+<span class="nc" id="L284">			sectorTable = new JTable(model);</span>
+<span class="nc" id="L285">			sectorTable.setRowSelectionAllowed(false);</span>
+<span class="nc" id="L286">			sectorTable.setFont(new Font(globalFont, Font.PLAIN, 16));</span>
+<span class="nc" id="L287">			sectorTable.setCellSelectionEnabled(true);</span>
+			
+<span class="nc" id="L289">			sectorTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);</span>
+<span class="nc" id="L290">			sectorTable.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+				@Override
+				public void mouseClicked(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L293">					int row = sectorTable.getSelectedRow();</span>
+<span class="nc" id="L294">					int col = sectorTable.getSelectedColumn();</span>
+<span class="nc" id="L295">					cellSelectedCol = col;</span>
+<span class="nc" id="L296">					cellSelectedRow = row;</span>
+					
+					try {
+<span class="nc" id="L299">						Sector mySector = service.getUniverse(gameName).getSector(currentSector.getX(), currentSector.getY());</span>
+						
+<span class="nc" id="L301">						Ship shipToShow = mySector.getCellShip(row, col);</span>
+						
+						/*JLabel lblShipAffiliation = new JLabel();
+						JLabel lblShipClass = new JLabel(&quot;Constitution&quot;);
+						JLabel lblShipAlertness = new JLabel(&quot;GREEN&quot;);
+						JLabel lblShipShieldCount = new JLabel(&quot;200&quot;);
+						JLabel lblShipTorpedoCount = new JLabel(&quot;10&quot;);
+						JLabel lblShipEnergyLvl = new JLabel(&quot;1000&quot;);
+						*/
+<span class="nc" id="L310">						selectedShipName.setText(shipToShow.getTitle());</span>
+<span class="nc" id="L311">						lblShipAffiliation.setText(shipToShow.getShipType().getEmpireId());</span>
+<span class="nc" id="L312">						lblShipClass.setText(shipToShow.getShipType().getShipClass());</span>
+<span class="nc" id="L313">						lblShipAlertness.setText(shipToShow.getAlertLvl().name());</span>
+<span class="nc" id="L314">						lblShipShieldCount.setText(Integer.toString(shipToShow.getShieldLvl()));</span>
+<span class="nc" id="L315">						lblShipTorpedoCount.setText(Integer.toString(shipToShow.getMissileQty()));</span>
+<span class="nc" id="L316">						lblShipEnergyLvl.setText(Integer.toString(shipToShow.getEnergyLvl()));</span>
+						
+						
+						
+<span class="nc" id="L320">					} catch (GameNotFoundException | NoObjectInCell e) {</span>
+						// TODO Auto-generated catch block
+<span class="nc" id="L322">						System.out.println(&quot;Not a ship&quot;);</span>
+<span class="nc" id="L323">					}</span>
+					
+<span class="nc" id="L325">					System.out.println(&quot;Selected Cell X: &quot; + cellSelectedCol);</span>
+<span class="nc" id="L326">					System.out.println(&quot;Selected Cell Y: &quot; + cellSelectedRow);</span>
+					//sectorTableSelected.setX(sectorTable.getSelectedColumn());
+                	//sectorTableSelected.setY(sectorTable.getSelectedRow());
+<span class="nc" id="L329">				}</span>
+			});
+			
+			//Ship myShip = new Ship();
+			//myShip.getCellShip(cellSelectedCol, cellSelectedRow);
+
+
+<span class="nc" id="L336">			sectorTable.setBorder(new LineBorder(new Color(0, 0, 0)));</span>
+			
+<span class="nc" id="L338">			JPanel sectorViewPanel = new JPanel();</span>
+<span class="nc" id="L339">			sectorViewPanel.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L340">			sectorViewPanel.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L341">			sectorViewPanel.setBounds(54, 46, 448, 448);</span>
+<span class="nc" id="L342">			contentPane.add(sectorViewPanel);</span>
+<span class="nc" id="L343">			sectorViewPanel.setLayout(null);</span>
+			
+			
+<span class="nc" id="L346">			sectorTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);</span>
+<span class="nc" id="L347">			sectorTable.setCellSelectionEnabled(true);</span>
+			
+<span class="nc" id="L349">			sectorTable.setBounds(0, 0, 448, 448);</span>
+<span class="nc" id="L350">			sectorViewPanel.add(sectorTable);</span>
+<span class="nc" id="L351">			sectorTable.setRowHeight(56);</span>
+<span class="nc" id="L352">			sectorTable.setTableHeader(null);</span>
+			
+<span class="nc" id="L354">			model.fireTableDataChanged();</span>
+<span class="nc" id="L355">			sectorTable.setModel(model);</span>
+			
+<span class="nc" id="L357">			JPanel panel = new JPanel();</span>
+<span class="nc" id="L358">			panel.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L359">			panel.setBounds(422, 0, 174, 46);</span>
+<span class="nc" id="L360">			contentPane.add(panel);</span>
+<span class="nc" id="L361">			panel.setLayout(null);</span>
+			
+<span class="nc" id="L363">			JLabel lblStarDate = new JLabel(&quot;Star Date:&quot;);</span>
+<span class="nc" id="L364">			lblStarDate.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L365">			lblStarDate.setBounds(8, 13, 93, 20);</span>
+<span class="nc" id="L366">			panel.add(lblStarDate);</span>
+<span class="nc" id="L367">			lblStarDate.setFont(new Font(globalFont, Font.BOLD, 16));</span>
+
+			/*Integer.toString(service.getGame(gameName).getDate())*/
+<span class="nc" id="L370">			System.out.println(&quot;The Stardate in MGS is &quot; + service.getGameDate(gameName));</span>
+			//JLabel updateStarDate = new JLabel(Integer.toString(theGame.getDate()));
+
+<span class="nc" id="L373">			JLabel updateStarDate = new JLabel(Integer.toString(service.getGameDate(gameName)));</span>
+<span class="nc" id="L374">			updateStarDate.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L375">			updateStarDate.setBounds(109, 15, 56, 16);</span>
+<span class="nc" id="L376">			panel.add(updateStarDate);</span>
+<span class="nc" id="L377">			updateStarDate.setFont(new Font(&quot;Tahoma&quot;, Font.PLAIN, 16));</span>
+			
+<span class="nc" id="L379">		} catch (GameNotFoundException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L381">			e.printStackTrace();</span>
+<span class="nc" id="L382">		}</span>
+		
+		//final SectorTableModel sectorModel = SectorTableModel.getInstance();
+	
+		
+<span class="nc" id="L387">		JPanel shipViewHeaderPnl = new JPanel();</span>
+<span class="nc" id="L388">		shipViewHeaderPnl.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L389">		shipViewHeaderPnl.setBounds(597, 320, 409, 39);</span>
+<span class="nc" id="L390">		contentPane.add(shipViewHeaderPnl);</span>
+<span class="nc" id="L391">		shipViewHeaderPnl.setBorder(new LineBorder(new Color(0, 0, 0), 2));</span>
+<span class="nc" id="L392">		shipViewHeaderPnl.setBackground(Color.LIGHT_GRAY);</span>
+<span class="nc" id="L393">		shipViewHeaderPnl.setLayout(null);</span>
+		
+		
+<span class="nc" id="L396">		lblNewLabel.setFont(new Font(globalFont, Font.BOLD, 13));</span>
+<span class="nc" id="L397">		lblNewLabel.setBounds(12, 13, 82, 16);</span>
+<span class="nc" id="L398">		shipViewHeaderPnl.add(lblNewLabel);</span>
+		
+<span class="nc" id="L400">		selectedShipName.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L401">		selectedShipName.setBounds(132, 13, 212, 16);</span>
+<span class="nc" id="L402">		shipViewHeaderPnl.add(selectedShipName);</span>
+		
+<span class="nc" id="L404">		JPanel lblAffiliation = new JPanel();</span>
+<span class="nc" id="L405">		lblAffiliation.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L406">		lblAffiliation.setBorder(new LineBorder(new Color(0, 0, 0), 2));</span>
+<span class="nc" id="L407">		lblAffiliation.setBounds(597, 354, 409, 189);</span>
+<span class="nc" id="L408">		contentPane.add(lblAffiliation);</span>
+<span class="nc" id="L409">		lblAffiliation.setLayout(null);</span>
+		
+<span class="nc" id="L411">		lblEnergyLevel.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L412">		lblEnergyLevel.setBounds(12, 158, 100, 16);</span>
+<span class="nc" id="L413">		lblAffiliation.add(lblEnergyLevel);</span>
+		
+<span class="nc" id="L415">		lblTorpedoCount.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L416">		lblTorpedoCount.setBounds(12, 129, 114, 16);</span>
+<span class="nc" id="L417">		lblAffiliation.add(lblTorpedoCount);</span>
+		
+		
+<span class="nc" id="L420">		lblShieldCount.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L421">		lblShieldCount.setBounds(12, 100, 100, 16);</span>
+<span class="nc" id="L422">		lblAffiliation.add(lblShieldCount);</span>
+		
+		
+<span class="nc" id="L425">		lblAlertLevel.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L426">		lblAlertLevel.setBounds(12, 71, 89, 16);</span>
+<span class="nc" id="L427">		lblAffiliation.add(lblAlertLevel);</span>
+		
+		
+<span class="nc" id="L430">		lblClass.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L431">		lblClass.setBounds(12, 42, 54, 16);</span>
+<span class="nc" id="L432">		lblAffiliation.add(lblClass);</span>
+		
+		
+<span class="nc" id="L435">		affiliationLabel.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L436">		affiliationLabel.setBounds(12, 13, 78, 16);</span>
+<span class="nc" id="L437">		lblAffiliation.add(affiliationLabel);</span>
+		
+		
+<span class="nc" id="L440">		lblShipAffiliation.setFont(new Font(globalFont, Font.PLAIN, 12));</span>
+<span class="nc" id="L441">		lblShipAffiliation.setBounds(138, 13, 172, 16);</span>
+<span class="nc" id="L442">		lblAffiliation.add(lblShipAffiliation);</span>
+		
+		
+<span class="nc" id="L445">		lblShipClass.setFont(new Font(globalFont, Font.PLAIN, 12));</span>
+<span class="nc" id="L446">		lblShipClass.setBounds(138, 42, 172, 16);</span>
+<span class="nc" id="L447">		lblAffiliation.add(lblShipClass);</span>
+		
+		
+<span class="nc" id="L450">		lblShipAlertness.setFont(new Font(globalFont, Font.PLAIN, 12));</span>
+<span class="nc" id="L451">		lblShipAlertness.setBounds(138, 71, 172, 16);</span>
+<span class="nc" id="L452">		lblAffiliation.add(lblShipAlertness);</span>
+		
+		
+<span class="nc" id="L455">		lblShipShieldCount.setFont(new Font(globalFont, Font.PLAIN, 12));</span>
+<span class="nc" id="L456">		lblShipShieldCount.setBounds(138, 100, 172, 16);</span>
+<span class="nc" id="L457">		lblAffiliation.add(lblShipShieldCount);</span>
+		
+	
+<span class="nc" id="L460">		lblShipTorpedoCount.setFont(new Font(globalFont, Font.PLAIN, 12));</span>
+<span class="nc" id="L461">		lblShipTorpedoCount.setBounds(138, 129, 172, 16);</span>
+<span class="nc" id="L462">		lblAffiliation.add(lblShipTorpedoCount);</span>
+		
+		
+<span class="nc" id="L465">		lblShipEnergyLvl.setFont(new Font(globalFont, Font.PLAIN, 12));</span>
+<span class="nc" id="L466">		lblShipEnergyLvl.setBounds(138, 158, 172, 16);</span>
+<span class="nc" id="L467">		lblAffiliation.add(lblShipEnergyLvl);</span>
+		
+
+		
+
+		
+<span class="nc" id="L473">		JPanel sectorPanel = new JPanel();</span>
+<span class="nc" id="L474">		sectorPanel.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L475">		sectorPanel.setBounds(55, 0, 224, 46);</span>
+<span class="nc" id="L476">		contentPane.add(sectorPanel);</span>
+<span class="nc" id="L477">		sectorPanel.setLayout(null);</span>
+		
+<span class="nc" id="L479">		JLabel lblSectorView = new JLabel(&quot;Sector&quot;);</span>
+<span class="nc" id="L480">		lblSectorView.setFont(new Font(globalFont, Font.BOLD, 13));</span>
+<span class="nc" id="L481">		lblSectorView.setBounds(12, 13, 60, 16);</span>
+<span class="nc" id="L482">		sectorPanel.add(lblSectorView);</span>
+		
+<span class="nc" id="L484">		JLabel lblSpecificSector = new JLabel(&quot; &quot;);</span>
+<span class="nc" id="L485">		lblSpecificSector.setFont(Font.getFont(globalFont));</span>
+<span class="nc" id="L486">		lblSpecificSector.setBounds(65, 13, 56, 16);</span>
+<span class="nc" id="L487">		sectorPanel.add(lblSpecificSector);</span>
+		
+<span class="nc" id="L489">		JLabel lblUniverse = new JLabel(&quot;Universe View&quot;);</span>
+<span class="nc" id="L490">		lblUniverse.setFont(new Font(globalFont, Font.BOLD, 13));</span>
+<span class="nc" id="L491">		lblUniverse.setBounds(756, 10, 154, 16);</span>
+<span class="nc" id="L492">		contentPane.add(lblUniverse);</span>
+		/***********************************************
+		 * End Sector View
+		 ***********************************************/
+<span class="nc" id="L496">		}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

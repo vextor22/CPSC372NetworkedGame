@@ -1,0 +1,110 @@
+package cpsc3720.contactserver;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class WeaponTracker {
+
+
+	private int masterId;
+	private Map<Integer, Weapon> weaponsMap;
+	private ShipTracker shipTracker;
+	
+	public WeaponTracker(ShipTracker shipTracker){
+		masterId= 0;
+		weaponsMap = new HashMap<Integer, Weapon>();
+		this.shipTracker = shipTracker;
+	}
+	
+    public int addWeapon(Weapon weapon) {	
+    	if(validate(weapon)){
+    		weapon.setIdNum(masterId);
+    		masterId+=1;
+    		weaponsMap.put(weapon.getIdNum(), weapon);
+    		
+    		System.out.println("Adding Weapon: " + weapon);
+    		return weapon.getIdNum();
+    	}
+    	else{
+    		return -1;
+    	}
+    }
+    
+	public Collection<Weapon> getWeaponsList() {
+		return weaponsMap.values();
+	}
+
+	public Weapon updateWeapon(Weapon weapon){
+		if(validate(weapon)){
+			weaponsMap.get(weapon.update(weapon));
+			System.out.println("Retrieved for update: " + weapon);
+	    	System.out.println("Updated to: " + weapon);
+			return weapon;
+		}
+		else{
+			Weapon errorWeapon = new Weapon(null, false, 0);
+			errorWeapon.setIdNum(-1);
+			return errorWeapon;
+		}
+	}
+
+	
+	//eventually this will return a list of all of the weapons to be presented and edited
+	public Map<Integer, Weapon> makeWeaponsList(){
+		return weaponsMap;	
+	}
+		
+	//searches list of ships to check if any ship has that weapon
+	public Weapon deleteWeapon(Weapon weapon) {
+		System.out.println("Delete Weapon: "+ weapon);
+		
+		Collection<Ship> ships = shipTracker.makeShipList().values();
+	
+		Iterator<Ship> shipIterator = ships.iterator();
+		Ship toSearch = new Ship();
+		for(;shipIterator.hasNext(); toSearch = shipIterator.next()){	
+			if(toSearch.getEnergyWeaponId() == weapon.getIdNum() || toSearch.getMissileWeaponId() == weapon.getIdNum()){
+				
+				Weapon errorWeapon = new Weapon(null, false, 0);
+				errorWeapon.setIdNum(-1);
+				return errorWeapon; 
+			}
+		}
+		weaponsMap.remove(weapon.getIdNum());
+		return weapon;
+	}
+	
+	// Validate the date
+	private boolean validate(Weapon weapon){
+<<<<<<< HEAD
+		for(int i =0; i< weaponsMap.size(); i++){
+			System.out.println(i);
+=======
+		for(int i = 0; i < weaponsMap.size(); i++){
+>>>>>>> 6c9fa051afc0e4686d445c4512b16bf4b11a6e12
+			if(weapon.getTitle().equals(weaponsMap.get(i).getTitle())){
+				return false;
+			}	
+		if(weapon.getYield()<0){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean reset(){	
+		weaponsMap.clear();
+		masterId = 0;
+		addWeapon(new Weapon("EnergyWeapon1",true, 5));
+		addWeapon(new Weapon("EnergyWeapon2",true, 6));
+		addWeapon(new Weapon("EnergyWeapon3",false, 7));
+	
+		return true;
+		
+	}
+}

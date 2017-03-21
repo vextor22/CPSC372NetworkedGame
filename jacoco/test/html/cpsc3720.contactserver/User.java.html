@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactserver</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package cpsc3720.contactserver;
+
+public class User {
+	private int idNum;
+	private String userName;
+	private String email;
+	private String password;
+	private String affiliation;
+	private boolean admin;
+
+<span class="nc" id="L11">	public User() {</span>
+		
+<span class="nc" id="L13">	}</span>
+	
+	
+	
+<span class="fc" id="L17">	public User(int idNum, String userName, String email, String password,boolean isAdmin){</span>
+<span class="fc" id="L18">		this.idNum = idNum; // have server change is after the object is created</span>
+<span class="fc" id="L19">		this.userName = userName;</span>
+
+<span class="fc" id="L21">		this.email = email;</span>
+<span class="fc" id="L22">		this.password = password;</span>
+<span class="fc" id="L23">		this.admin = isAdmin;</span>
+
+<span class="fc" id="L25">	}</span>
+	public User update(User user){
+		
+<span class="fc" id="L28">		userName = user.userName;</span>
+<span class="fc" id="L29">		email = user.email;</span>
+<span class="fc" id="L30">		password = user.password;</span>
+<span class="fc" id="L31">		admin = user.admin;</span>
+		
+<span class="fc" id="L33">		return user;</span>
+	}
+	
+	public int getIdNum() {
+<span class="fc" id="L37">		return idNum;</span>
+	}
+	
+	void setIdNum(int idNum){
+<span class="fc" id="L41">		this.idNum = idNum;</span>
+<span class="fc" id="L42">	}</span>
+	public String getUserName() {
+<span class="fc" id="L44">		return userName;</span>
+	}
+	
+	public String getEmail() {
+<span class="fc" id="L48">		return email;</span>
+	}
+	
+	public String getPassword(){
+<span class="fc" id="L52">		return password;</span>
+	}
+	
+	public boolean getAdmin() {
+<span class="nc" id="L56">		return admin;</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="fc" id="L61">		return &quot;User [idNum=&quot; + idNum + &quot;, userName=&quot; + userName + &quot;, email=&quot; + email+&quot;, password=&quot; + password + &quot;, isAdmin=&quot; + admin + &quot;]&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

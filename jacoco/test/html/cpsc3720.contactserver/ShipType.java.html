@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ShipType.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactserver</a> &gt; <span class="el_source">ShipType.java</span></div><h1>ShipType.java</h1><pre class="source lang-java linenums">package cpsc3720.contactserver;
+
+
+public class ShipType {
+	
+	// follows the list of fields give by the .dat files
+	private String shipTypeId;// Short Id or the ship type
+	private String name; //the name of the ship
+	private String shipClass; 
+	private String empireId;
+	
+	private int maxEnergy; // maximum ENergy of the ship
+	private int maxSpeed; // maximum speed of the ship
+	private int maxShields; // maximum Shield Level
+	
+	private String energyWeaponType; // type of energy weapon the ship receives
+	private String missileWeaponType; // type of missile weapon the ship receives
+	private int maxMissile; // max amount of missiles the ship will have
+	
+	
+<span class="fc" id="L21">	public ShipType(String name){</span>
+<span class="fc" id="L22">		this.shipTypeId = null;</span>
+<span class="fc" id="L23">		this.name = name; //the name of the ship</span>
+<span class="fc" id="L24">		this.shipClass = null;</span>
+<span class="fc" id="L25">		this.empireId = null;</span>
+		
+<span class="fc" id="L27">		this.maxEnergy = 0;</span>
+<span class="fc" id="L28">		this.maxSpeed = 0;</span>
+<span class="fc" id="L29">		this.maxShields = 0;</span>
+		
+<span class="fc" id="L31">		this.energyWeaponType = null;</span>
+<span class="fc" id="L32">		this.missileWeaponType = null;</span>
+<span class="fc" id="L33">		this.maxMissile = 0;</span>
+		
+<span class="fc" id="L35">	}</span>
+	
+<span class="fc" id="L37">	public ShipType(String id, String name, String shipClass, String empId, int maxE, int maxSp, int maxSH, String enWepType, String misWepType, int maxMis){</span>
+		
+<span class="fc" id="L39">		this.shipTypeId = id;</span>
+<span class="fc" id="L40">		this.name = name; //the name of the ship</span>
+<span class="fc" id="L41">		this.shipClass = shipClass;</span>
+<span class="fc" id="L42">		this.empireId = empId;</span>
+		
+<span class="fc" id="L44">		this.maxEnergy = maxE;</span>
+<span class="fc" id="L45">		this.maxSpeed = maxSp;</span>
+<span class="fc" id="L46">		this.maxShields = maxSH;</span>
+		
+<span class="fc" id="L48">		this.energyWeaponType = enWepType;</span>
+<span class="fc" id="L49">		this.missileWeaponType = misWepType;</span>
+<span class="fc" id="L50">		this.maxMissile = maxMis;</span>
+		
+<span class="fc" id="L52">	}</span>
+	
+	
+
+	public String getShipTypeId() {
+<span class="fc" id="L57">		return shipTypeId;</span>
+	}
+
+
+	public String getName() {
+<span class="fc" id="L62">		return name;</span>
+	}
+
+
+	public String getShipClass() {
+<span class="fc" id="L67">		return shipClass;</span>
+	}
+
+
+	public String getEmpireId() {
+<span class="fc" id="L72">		return empireId;</span>
+	}
+
+
+	public int getMaxEnergy() {
+<span class="nc" id="L77">		return maxEnergy;</span>
+	}
+
+
+	public int getMaxSpeed() {
+<span class="nc" id="L82">		return maxSpeed;</span>
+	}
+
+
+	public int getMaxShields() {
+<span class="nc" id="L87">		return maxShields;</span>
+	}
+
+
+	public String getEnergyWeaponType() {
+<span class="fc" id="L92">		return energyWeaponType;</span>
+	}
+
+
+	public String getMissileWeaponType() {
+<span class="fc" id="L97">		return missileWeaponType;</span>
+	}
+
+
+	public int getMaxMissile() {
+<span class="nc" id="L102">		return maxMissile;</span>
+	}
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

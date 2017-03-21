@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>UniverseTableModel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">team2</a> &gt; <a href="index.source.html" class="el_package">cpsc3720.contactclient</a> &gt; <span class="el_source">UniverseTableModel.java</span></div><h1>UniverseTableModel.java</h1><pre class="source lang-java linenums">package cpsc3720.contactclient;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.swing.table.AbstractTableModel;
+
+import retrofit.RestAdapter;
+import cpsc3720.contactserver.ContactServer;
+import cpsc3720.contactserver.GameNotFoundException;
+import cpsc3720.contactserver.Player;
+import cpsc3720.contactserver.Universe;
+import cpsc3720.contactservice.ContactService;
+
+
+
+<span class="nc bnc" id="L17" title="All 2 branches missed.">public class UniverseTableModel extends AbstractTableModel{</span>
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3647780584869878205L;
+
+	private static UniverseTableModel myUnivTableModel;
+<span class="nc" id="L25">	private String[][] universe = new String[8][8];//each sector will have a int,int</span>
+	Collection&lt;Integer&gt; univData;
+	private Player thePlayer;
+	
+	UniverseTableModel(Player thePlayer){
+<span class="nc" id="L30">		super();</span>
+<span class="nc" id="L31">		univData = new ArrayList&lt;Integer&gt;();</span>
+<span class="nc" id="L32">		this.thePlayer = thePlayer;</span>
+<span class="nc" id="L33">	}</span>
+	
+	@Override
+	public int getColumnCount() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L38">		return 8;</span>
+	}
+
+	@Override
+	public int getRowCount() {
+		// TODO Auto-generated method stub
+<span class="nc" id="L44">		return 8;</span>
+	}
+
+	@Override
+	//this wil return what will be seen in the cell
+	public Object getValueAt(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+<span class="nc" id="L51">		return universe[arg0][arg1];</span>
+	}
+	
+	//needs to be similar to setSector but instead of displaying
+	public void setUniverseTable(Universe univ){
+		
+		//go through each sector and then set what the sector needs to be.
+		//ArrayList&lt;String&gt; Data = new ArrayList&lt;String&gt;();
+		
+<span class="nc" id="L60">		int foe = 0, friend = 0;</span>
+		
+<span class="nc" id="L62">		ContactService service = new RestAdapter.Builder()</span>
+		
+		.setEndpoint(&quot;http://localhost:8080&quot;)
+		.build()
+		.create(ContactService.class);
+		
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		for (int x = 0; x &lt; 8; x++){</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">			for (int y = 0; y &lt; 8; y++){</span>
+				//System.out.println(univ.);
+				//univ.getSector(x,y);
+				
+				try {
+<span class="nc" id="L74">					Universe testUni = service.getUniverse(&quot;Star Trek Forever&quot;);</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">					assert(univ.getSector(x, y) != null);</span>
+<span class="nc bnc" id="L76" title="All 4 branches missed.">					assert(thePlayer != null);</span>
+<span class="nc bnc" id="L77" title="All 4 branches missed.">					assert(universe[x][y] != null);</span>
+<span class="nc" id="L78">					universe[x][y] = univ.getSector(x,y).sectorSummary(thePlayer);</span>
+					
+					
+<span class="nc" id="L81">				} catch (GameNotFoundException e) {</span>
+<span class="nc" id="L82">					e.printStackTrace();</span>
+<span class="nc" id="L83">				}</span>
+				
+			}
+		}
+		
+<span class="nc" id="L88">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
